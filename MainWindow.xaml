@@ -1,0 +1,16 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="Окно приложения" Height="400" Width="500">
+    <Grid Name="MainMenu" Background="White">
+        <Grid Name="UperMenu" Background="LightGray" Height="40" VerticalAlignment="Top" HorizontalAlignment="Stretch" SnapsToDevicePixels="True"/>
+        <Button Content="Окно корзины" Click="Btn1_click" HorizontalAlignment="Right" VerticalAlignment="Top" Width="93" Height="29" Background="LightGray" Margin="0,5,20,0"/>
+        <Button Content="Панель магазина" Click="Btn2_click" HorizontalAlignment="Left" Margin="32,0,0,30" VerticalAlignment="Bottom" Width="124" Height="40" Background="#FF1298C3" Foreground="White"/>
+        <Image HorizontalAlignment="Stretch" Height="201" Margin="183,50,0,0" VerticalAlignment="Stretch" Width="297" Source="ApplicationData\Current\LocalFolder\img2.png"/>
+        <Label Content="МАГАЗИН УМНЫХ ШТУЧЕК" HorizontalAlignment="Left" Height="24" Margin="10,10,0,0" VerticalAlignment="Top" Width="164"/>
+    </Grid>
+</Window>
