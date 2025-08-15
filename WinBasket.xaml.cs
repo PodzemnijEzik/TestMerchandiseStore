@@ -17,9 +17,7 @@ using System.Collections.ObjectModel;
 
 namespace WpfApp1
 {
-	/// <summary>
-	/// Логика взаимодействия для WinBasket.xaml
-	/// </summary>
+	//класс окна покупной корзины
 	public partial class WinBasket : Window
 	{
 		public static ObservableCollection<Tovar> listBasket;
@@ -28,32 +26,50 @@ namespace WpfApp1
 		{
 			
 			InitializeComponent();
+
+			//загрузка уже выбранных товаров
 			var json = File.ReadAllText("basket.json");
 			listBasket = new ObservableCollection<Tovar>(JsonConvert.DeserializeObject<List<Tovar>>(json));
+
+			//загрузка уже выбранных товаровотображение товаров
 			BasketListView.ItemsSource = listBasket;
+
+			//вывод количества товара
 			Count.Content = "Количество товара: " + listBasket.Count.ToString();
+
+			//подсчет общей суммы цены
 			double sum = 0;
 			foreach(Tovar tovar in listBasket)
 			{
 				sum += tovar.Price;
 			}
+
+			// вывод общей суммы цены
 			Price.Content = "Общая стоимость: $" + sum.ToString();
 		}
 
 		private void DeleteButton_Click(object sender, RoutedEventArgs e)
 		{
+			//удаление всех выбранных товаров из списка
 			while (BasketListView.SelectedItems.Count > 0) {
 				listBasket.Remove(BasketListView.SelectedItems[0] as Tovar);
 			}
+
+			//сохранение оставшихся товаров
 			string json = JsonConvert.SerializeObject(listBasket, Formatting.Indented);
 			File.WriteAllText("basket.json", json);
 
+			//вывод нового количества товара
 			Count.Content = "Количество товара: " + listBasket.Count.ToString();
+
+			//переподсчет общей суммы цены
 			double sum = 0;
 			foreach (Tovar tovar in listBasket)
 			{
 				sum += tovar.Price;
 			}
+
+			// вывод новой общей суммы цены
 			Price.Content = "Общая стоимость: $" + sum.ToString();
 		}
 	}

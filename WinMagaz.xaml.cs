@@ -19,11 +19,7 @@ using System.Data;
 
 namespace WpfApp1
 {
-	/// <summary>
-	/// Логика взаимодействия для WinMagaz.xaml
-	/// </summary>
-	/// 
-
+	//класс данных карточки товара
 	public class Tovar
 	{
 		[JsonProperty("id")]
@@ -37,34 +33,10 @@ namespace WpfApp1
 
 		[JsonProperty("image")]
 		public string Image { get; set; }
+	
 	}
-	public class RelayCommand : ICommand
-	{
-		private Action<object> execute;
-		private Func<object, bool> canExecute;
 
-		public event EventHandler CanExecuteChanged
-		{
-			add { CommandManager.RequerySuggested += value; }
-			remove { CommandManager.RequerySuggested -= value; }
-		}
-
-		public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
-		{
-			this.execute = execute;
-			this.canExecute = canExecute;
-		}
-
-		public bool CanExecute(object parameter)
-		{
-			return this.canExecute == null || this.canExecute(parameter);
-		}
-
-		public void Execute(object parameter)
-		{
-			this.execute(parameter);
-		}
-	}
+	//класс окна магазина товаров 
 	public partial class WinMagaz : Window
 	{
 		public static List<Tovar> listTovar;
@@ -76,54 +48,79 @@ namespace WpfApp1
 		}
 		public WinMagaz()
 		{
+			//загрузка данных о товарах
 			var json = File.ReadAllText("data.json");
 			listTovar = JsonConvert.DeserializeObject<List<Tovar>>(json);
+
+			//загрузка уже выбранных товаров
 			json = File.ReadAllText("basket.json");
 			listBasket = JsonConvert.DeserializeObject<List<Tovar>>(json);
 			InitializeComponent();
 
+			/*
+			 Можно было тоже сделать все с помощью ObservableCollection
+			но я решил попробовать реализовать все кодом)
+			 */
+			/*
+			 Создание объектов и заполнеие WarpMagazMenu
+			 */
 			foreach (Tovar tovar in listTovar)
 			{
+				//Место для карточки товара
 				Border buttonTovar = new Border { Width = 200, Height = 300, Background = new SolidColorBrush(Colors.White), Margin = new Thickness(10) };
+				
+				//общий блок куда поместятся все объекты данных о товаре
 				Grid grid = new Grid { };
+
+				//Название товара
 				grid.Children.Add(new Label
 				{
 					Content = tovar.Name.ToString(),
 					HorizontalAlignment = HorizontalAlignment.Center
 				});
+
+				//Картинка товара
 				grid.Children.Add(new Image {
 					Width = 190,
 					Height = 200,
 					Source = new BitmapImage(new Uri(("ApplicationData\\Current\\LocalFolder\\" + tovar.Image), UriKind.Relative)),
 					Margin = new Thickness(0, 30, 0, 0),
 					VerticalAlignment = VerticalAlignment.Top });
+
+				//Цена товара
 				grid.Children.Add(new Label {
 					Content = "$" + tovar.Price.ToString(),
 					Margin = new Thickness(10, 230, 10, 10),
 					HorizontalAlignment = HorizontalAlignment.Center
 				});
+
+				//кнопка добавить в корзину
 				Button button = new Button {
 					Width = 130,
 					Height = 30,
 					Margin = new Thickness(10, 260, 10, 10),
-					Content = "Добавить в корзину",
-					Command = new RelayCommand(o => {
-						Tovar tov = tovar;
-						tov.Image = ("ApplicationData\\Current\\LocalFolder\\" + tovar.Image);
-						listBasket.Add(tov);
-						string json = JsonConvert.SerializeObject(listBasket, Formatting.Indented);
-						File.WriteAllText("basket.json", json);
-					}) };
-				foreach(var iter in listBasket)
+					Content = "Добавить в корзину"
+					};
+				button.Click += (s, e) => {
+					Tovar tov = tovar;
+					tov.Image = ("ApplicationData\\Current\\LocalFolder\\" + tovar.Image);
+					listBasket.Add(tov);
+					string json = JsonConvert.SerializeObject(listBasket, Formatting.Indented);
+					File.WriteAllText("basket.json", json);
+					button.IsEnabled = false; };
+				grid.Children.Add(button);
+
+				//проверка если товар уже добавлен
+				foreach (var iter in listBasket)
 				{
 					if(iter.Id == tovar.Id)
 					{
 						button.IsEnabled = false;
 					}
 				}
-				button.Click += (s, e) => { button.IsEnabled = false; };
-				grid.Children.Add(button);
 				buttonTovar.Child = grid;
+
+				//выгрузка карточки
 				WarpMagazMenu.Children.Add(buttonTovar);
 			}
 

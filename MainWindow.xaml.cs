@@ -15,9 +15,7 @@ using System.Windows.Shapes;
 
 namespace WpfApp1
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
+	//класс главного окна
 	public partial class MainWindow : Window
 	{
 		public static WinMagaz winMagaz;
@@ -28,6 +26,7 @@ namespace WpfApp1
 			
 		}
 
+		//открытие окна с катологом товаров
 		private void Btn2_click(object sender, RoutedEventArgs e)
 		{
 			
@@ -38,6 +37,7 @@ namespace WpfApp1
 			}
 		}
 
+		//открытие покупной корзины
 		private void Btn1_click(object sender, RoutedEventArgs e)
 		{
 			if (winBasket == null || winBasket.IsEnabled)
