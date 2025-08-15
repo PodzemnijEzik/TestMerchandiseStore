@@ -28,7 +28,7 @@ namespace WpfApp1
 			InitializeComponent();
 
 			//проверка существования файла
-			if (!File.Exists("ApplicationData\\basket.json"))
+			if (!File.Exists("basket.json"))
 			{
 				File.WriteAllText("basket.json", "[]");
 			}
