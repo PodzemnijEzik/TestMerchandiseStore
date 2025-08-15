@@ -27,6 +27,12 @@ namespace WpfApp1
 			
 			InitializeComponent();
 
+			//проверка существования файла
+			if (!File.Exists("ApplicationData\\basket.json"))
+			{
+				File.WriteAllText("basket.json", "[]");
+			}
+
 			//загрузка уже выбранных товаров
 			var json = File.ReadAllText("basket.json");
 			listBasket = new ObservableCollection<Tovar>(JsonConvert.DeserializeObject<List<Tovar>>(json));

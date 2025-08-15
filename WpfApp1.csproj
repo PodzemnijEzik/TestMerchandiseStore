@@ -29,6 +29,7 @@
     <None Remove="ApplicationData\Current\LocalFolder\product7.jpg" />
     <None Remove="ApplicationData\Current\LocalFolder\product8.jpg" />
     <None Remove="ApplicationData\Current\LocalFolder\product9.jpg" />
+    <None Remove="ApplicationData\data.json" />
     <None Remove="data.json" />
   </ItemGroup>
 
@@ -58,7 +59,9 @@
     <Resource Include="ApplicationData\Current\LocalFolder\product7.jpg" />
     <Resource Include="ApplicationData\Current\LocalFolder\product8.jpg" />
     <Resource Include="ApplicationData\Current\LocalFolder\product9.jpg" />
-    <Resource Include="data.json" />
+    <EmbeddedResource Include="data.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

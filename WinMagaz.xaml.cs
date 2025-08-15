@@ -52,6 +52,12 @@ namespace WpfApp1
 			var json = File.ReadAllText("data.json");
 			listTovar = JsonConvert.DeserializeObject<List<Tovar>>(json);
 
+			//проверка существования файла
+			if (!File.Exists("basket.json"))
+			{
+				File.WriteAllText("basket.json", "[]");
+			}
+
 			//загрузка уже выбранных товаров
 			json = File.ReadAllText("basket.json");
 			listBasket = JsonConvert.DeserializeObject<List<Tovar>>(json);
